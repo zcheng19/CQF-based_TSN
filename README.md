@@ -1,5 +1,5 @@
 # CQF-based TSN Simulator
-The CQF-based TSN simulator supports a general scheduling environment of the original CQF or Multi-CQF model for Time-Sensitive Networks (TSN). Several packed schedulers can be used to do the test.
+The CQF-based TSN simulator supports a general scheduling environment of the CQF or Multi-CQF model for Time-Sensitive Networks (TSN). Several packed schedulers can be used to do the test.
 
 Run "pip3 install -r requirements.txt" to install the necessary modules.
 
