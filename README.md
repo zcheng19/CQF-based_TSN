@@ -7,4 +7,6 @@ Experimental Environment: Python version: 3.8.10. Ubuntu version: 20.04.1, 5.13.
 
 Run "python3 main.py" under different folders to start solving the NP-hard scheduling problem by utilizing the corresponding schedulers.
 
+Run "python3 play.py checkpoint" to test the performance of model.
+
 The CQF-based TSN simulator can support multiple cyclic queues from 2 to K, where K is an integer.
