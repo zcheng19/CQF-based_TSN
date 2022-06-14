@@ -1,4 +1,5 @@
 def flow_template():
+    # An example of flow features
     flow_features = [
         {"latency": 2000, "jitter": 500, "period": 3200},
         {"latency": 2000, "jitter": 100, "period": 1600},
