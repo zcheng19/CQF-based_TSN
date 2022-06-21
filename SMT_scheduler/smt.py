@@ -65,7 +65,7 @@ if __name__ == "__main__":
         for i in range(flow_nums):
             for j in range(slot_counts):
                 util[i, j] = int(str(m[solution_array[i][j]]))
-        # 统计每个时间槽帧的个数
+        # Count the number of flows in each time interval
         slot_lst = []
         for j in range(slot_counts):
             s = 0
@@ -73,7 +73,7 @@ if __name__ == "__main__":
                 s += util[i, j]
             slot_lst.append(s)
         slot_lst = np.array(slot_lst)
-        recorder = (slot_lst * FRAME_SIZE) / (myenv.capacity - myenv.preserv) # 计算每个时间槽的占比
+        recorder = (slot_lst * FRAME_SIZE) / (myenv.capacity - myenv.preserv) # Compute the usage of each time interval
         variance = 1 - np.std(recorder)
         print("Balance factor:", variance)
     else:
