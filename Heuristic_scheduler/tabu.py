@@ -1,12 +1,12 @@
 import random
 
 def init_res(env, online_net):
-    # 利用epsilon贪婪策略生成初始解
+    # Generate the initial solution based on epsilon-greedy policy
     obs = env.reset()
     flow_len = len(env.flows)
     STEP = flow_len
     reward = 0
-    action_record_lst = [] # 记录了每个流插在哪个时间槽 
+    action_record_lst = [] # Store the mapping policy between flows and time intervals
 
     for step in range(1, STEP+1):
         action = online_net.act(obs, 0.2, env, env.flows[step-1]["period"])[0]
@@ -16,13 +16,13 @@ def init_res(env, online_net):
         reward += rew
         if done:
             break
-        action_record_lst.append([step-1, action]) # 流ID, 时间槽
+        action_record_lst.append([step-1, action]) # (flow ID, time interval)
         obs = new_obs
     return reward, action_record_lst
 
-def shifting(env, action_lst): # 该参数记录了每个流插在哪个时间槽
-    # 交换调度成功业务流，改变时间槽的分布
-    L = [] # 记录交换了哪些流
+def shifting(env, action_lst):
+    # Swap the successfully scheduled flows to change the distribution of time interval usage
+    L = [] # Store the swapped flows
     num = random.randint(0, 1)
     for i in range(num):
         index = random.randint(0, len(action_lst)-1)
@@ -41,8 +41,8 @@ def shifting(env, action_lst): # 该参数记录了每个流插在哪个时间�
         else:
             return reward, action_lst, new_obs
 
-def add_flows(env, actionLst, online_net, obs): # 这里的actionLst是经过exchange剔除后的
-    # 随机添加新的业务流
+def add_flows(env, actionLst, online_net, obs): 
+    # Add new flows randomly
     L = []
     for a in actionLst:
         L.append(a[0])
@@ -60,17 +60,17 @@ def add_flows(env, actionLst, online_net, obs): # 这里的actionLst是经过exc
             add_flow_lst.append([j, action])
     return reward, add_flow_lst
 
-def exchanging(act_lst, env): # 这里的act_lst是shifting之后的
-    # 随机剔除调度成功的业务流
+def exchanging(act_lst, env):
+    # Pop the successfully scheduled flows randomly
     reward = 0
     env.reset()
     num = random.randint(0, 1)
-    L = [] # 存储所有剔除的流
+    L = [] # Store the popped flows
     for i in range(num):
         if not act_lst:
             break
         act = act_lst.pop(random.randint(0, len(act_lst)-1))
-        L.append(act) # [流ID, 时间槽]
+        L.append(act) # [flow ID, time interval]
     for j in range(len(act_lst)):
         new_obs, rew, done = env.step(act_lst[j][1], env.flows[act_lst[j][0]]["period"], env.flows[act_lst[j][0]]["period"])
         if done:
