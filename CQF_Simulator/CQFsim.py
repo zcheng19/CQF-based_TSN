@@ -100,6 +100,7 @@ class MulEnv:
                 y = temp 
 
     def count_max_pathlen(self):
+        # Count the number of intermidiate switches along the largest path
         pathLst = self.find_all_paths("h1", "h2")
         maxlen = len(pathLst[0])
         for lst in pathLst:
