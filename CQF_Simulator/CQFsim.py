@@ -19,6 +19,7 @@ class MulEnv:
         self.create_graph()
 
     def create_graph(self):
+        # An example of graph
         self.graph = {
             "h1": ["s1", ],
             "s1": ["h1", "s2"],
@@ -115,7 +116,7 @@ class MulEnv:
     def action_space(self, max_T=True, T=None):
         self.get_hyper_period()
         if max_T:
-            self.T = self.get_gcd_periods()
+            self.T = self.get_gcd_periods() # Compute the hyper period
             action_num = self.hyper / self.T
         else:
             if T is None:
@@ -176,7 +177,7 @@ class MulEnv:
         # print(wrapper_state.shape)
         return wrapper_state
     
-    def step(self, slot, period, period_nth=None): # slot the index of time interval, period is flow period, flow_nth is the next flow
+    def step(self, slot, period, period_nth=None): # slot is the index of time interval, period is flow period, flow_nth is the next flow
         last_max_ratio = self.state[0].max()
         freq = int(self.hyper / period) # Compute the apperance frequency of the flow in a hyper period
         for cnt in range(freq):
