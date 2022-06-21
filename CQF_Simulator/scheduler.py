@@ -14,12 +14,12 @@ msgpack_numpy_patch()
 GAMMA=0.99
 BATCH_SIZE=32
 # SAVE_PATH = './atari_model_double.pack'
-# SAVE_INTERVAL = 10000 # 每隔？存一次
+# SAVE_INTERVAL = 10000 
 # LOG_DIR = './logs/atari_double'
 
 def init_weights(m):
     if isinstance(m, nn.Linear) or isinstance(m, nn.Conv2d):
-        torch.nn.init.kaiming_uniform_(m.weight, nonlinearity='relu') # m.weight?
+        torch.nn.init.kaiming_uniform_(m.weight, nonlinearity='relu') 
 
 class Residual(nn.Module):
     def __init__(self, input_channels, num_channels,
@@ -106,7 +106,7 @@ class Network(nn.Module):
                 actions[0] = random.randint(0, self.num_actions - 1)
 
             valid = env.check_valid_action(actions[0], period)
-            if not valid: # 如果不合法，则重新选择动作
+            if not valid: # If the action is invalid, find another one
                 q_values[0][actions[0]] = -np.inf
             else:
                 break
@@ -165,99 +165,5 @@ class Network(nn.Module):
         params = {k: torch.as_tensor(v, device=self.device) for k,v in params_numpy.items()}
 
         self.load_state_dict(params)
-
-# if __name__ == '__main__':
-#     device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
-
-#     make_env = lambda: Monitor(make_atari_deepmind('BreakoutNoFrameskip-v4', scale_values=True), allow_early_resets=True)
-
-#     # vec_env = DummyVecEnv([make_env for _ in range(NUM_ENVS)])
-#     vec_env = SubprocVecEnv([make_env for _ in range(NUM_ENVS)])
-
-#     env = BatchedPytorchFrameStack(vec_env, k=4)
-
-#     replay_buffer = deque(maxlen=BUFFER_SIZE)
-#     epinfos_buffer = deque([], maxlen=100) # info?
-
-#     episode_count = 0
-
-#     online_net = Network(env, device=device)
-#     target_net = Network(env, device=device)
-
-#     online_net.apply(init_weights)
-
-#     online_net = online_net.to(device)
-#     target_net = target_net.to(device)
-
-#     target_net.load_state_dict(online_net.state_dict())
-
-#     optimizer = torch.optim.Adam(online_net.parameters(), lr=LR)
-
-#     # Initialize Replay Buffer
-#     obses = env.reset()
-#     for _ in range(MIN_REPLAY_SIZE):
-#         actions = [env.action_space.sample() for _ in range(NUM_ENVS)]
-
-#         new_obses, rews, dones, _ = env.step(actions)
-
-#         for obs, action, rew, done, new_obs in zip(obses, actions, rews, dones, new_obses):
-#             transition = (obs, action, rew, done, new_obs)
-#             replay_buffer.append(transition)
-
-#         obses = new_obses
-
-#     # Main Training Loop
-#     obses = env.reset()
-
-#     for step in itertools.count():
-#         epsilon = np.interp(step * NUM_ENVS, [0, EPSILON_DECAY], [EPSILON_START, EPSILON_END]) #(待插入值, [(0, epsilon_start),(epsilon_decay, epsilon_end)]),在两坐标之间连线，并在求出连线与x=插入值交点的纵坐标
-
-#         if isinstance(obses[0], PytorchLazyFrames):
-#             act_obses = np.stack([o.get_frames() for o in obses]) # why use stack?
-#             actions = online_net.act(act_obses, epsilon)
-#         else:
-#             actions = online_net.act(obses, epsilon)
-
-#         new_obses, rews, dones, infos = env.step(actions)
-
-#         for obs, action, rew, done, new_obs, info in zip(obses, actions, rews, dones, new_obses, infos):
-#             transition = (obs, action, rew, done, new_obs)
-#             replay_buffer.append(transition)
-
-#             if done:
-#                 epinfos_buffer.append(info['episode'])
-#                 episode_count += 1
-#                 new_obses = env.reset()
-
-#         obses = new_obses
-
-#         # Start Gradient Step
-#         transitions = random.sample(replay_buffer, BATCH_SIZE)
-#         loss = online_net.compute_loss(transitions, target_net)
-
-#         # Gradient Descent
-#         optimizer.zero_grad()
-#         loss.backward()
-#         optimizer.step()
-
-#         # Update Target Network
-#         if step % TARGET_UPDATE_FREQ == 0:
-#             target_net.load_state_dict(online_net.state_dict())
-
-#         # Logging
-#         if step % LOG_INTERVAL == 0:
-#             rew_mean = np.mean([e['r'] for e in epinfos_buffer]) or 0
-#             len_mean = np.mean([e['l'] for e in epinfos_buffer]) or 0
-
-#             print()
-#             print('Step', step)
-#             print('Avg Rew', rew_mean)
-#             print('Avg Ep Len', len_mean)
-#             print('Episodes', episode_count)
-
-#         # Save
-#         if step % SAVE_INTERVAL == 0 and step !=0:
-#             print('Saving...')
-#             online_net.save(SAVE_PATH)
 
 
