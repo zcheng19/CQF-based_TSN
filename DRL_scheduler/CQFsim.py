@@ -1,12 +1,8 @@
 import numpy as np 
 from cus_flow import flow_template
 
-
-# 固定参数
 BANDWITH = 10 ** (-3) * 1000 # kbit/us
 
-
-# 可调参数
 PRESRV_BASE =  50 # 预留多少空间 kbit
 SWITCH_NUM = 2 # 中间共有多少台交换机
 MAX_T = True
