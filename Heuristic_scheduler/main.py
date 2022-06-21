@@ -10,13 +10,11 @@ import time
 import os
 import random
 
-# 可调参数
 ITERS = 10000
 #ITERS = 3
 STEPS = 50
 EXCHANGE = True
 DEQUELEN = 50
-# 固定参数
 filefullpath = "./tabudata.csv"
 
 
@@ -26,7 +24,7 @@ def save_csv(epLst, rewardLst, epLen):
         L.append([i, j, z])
 
     name=['episodes','rewards', 'flows']
-    test=pd.DataFrame(columns=name,data=L) #数据有三列，列名分别为one,two,three
+    test=pd.DataFrame(columns=name,data=L) 
     test.to_csv(filefullpath, header=False, index=False)
 
 if os.path.exists(filefullpath):
@@ -50,7 +48,7 @@ R = [] # global best rewards
 Flow_num = [] # global flow number
 Resource = [] # global resource util
 
-reward, actLst = init_res(myenv, online_net) # 初始化结束
+reward, actLst = init_res(myenv, online_net) # init finish
 R.append(reward)
 Flow_num.append(len(actLst))
 print("init", "reward:", reward, "flows:", len(actLst))
@@ -58,8 +56,8 @@ cur_actLst = actLst
 tabu_list = deque(maxlen=DEQUELEN)
 
 for itera in range(ITERS):
-    actionStepLst = [] # 记录循环中的所有操作
-    actionRewardLst = [] # 记录每种操作所对应的reward
+    actionStepLst = [] # Store the operations at each cycle
+    actionRewardLst = [] # Store the reward related to each operation
     step_count = 0
     for step in range(STEPS):
         if EXCHANGE:
@@ -67,7 +65,7 @@ for itera in range(ITERS):
         reward, add_flowsLst = add_flows(myenv, action_list, online_net, obs)
         reward += rewd
         actionRewardLst.append(reward)
-        actionStepLst.append([pop_flowsLst, add_flowsLst]) # 两个actionLst索引对应
+        actionStepLst.append([pop_flowsLst, add_flowsLst]) 
     
     actionRewardNdarray = np.array(actionRewardLst)
     if random.random() <= 0.2:
@@ -83,7 +81,6 @@ for itera in range(ITERS):
             else:
                 actionRewardNdarray[max_index] = -np.inf
         else:
-            # 所有元素都在禁忌表中
             break
     else:
         max_index = random.sample(range(len(actionRewardNdarray)), 1)[0]
@@ -97,14 +94,14 @@ for itera in range(ITERS):
     step_count += 1
     print("iteration:", itera, "max reward:", actionRewardNdarray[max_index], "flows:", len(cur_actLst))
   
-    # 统计每个时间槽资源占比
+    # Compute the usage of each time interval
     slot_num = myenv.hyper / myenv.T
     recorder = np.zeros(int(slot_num,))
     for action in cur_actLst:
         freq = myenv.hyper / myenv.flows[action[0]]["period"]
         for cnt in range(int(freq)):
             recorder[int(action[1]+cnt*(myenv.flows[action[0]]["period"]/myenv.T))] += 1
-    # 计算均衡率
+    # Compute the balance factor
     recorder = (recorder * FRAME_SIZE) / (myenv.capacity - myenv.preserv)
     variance = 1 - np.std(recorder)
     Resource.append(variance)
