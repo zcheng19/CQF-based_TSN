@@ -49,9 +49,9 @@ def test_time():
     print("step count:", step_count)
 
 def resource_distribution():
-    # 统计不同时间槽中帧的数量，计算占比最大的时间槽的方差
+    # Compute the variance of time interval usage
     slot_num = int(myenv.hyper / myenv.T)
-    recorder = np.zeros(slot_num,) # 记录每个时间槽有几个帧
+    recorder = np.zeros(slot_num,) # Store the number of flows in each time interval
     reward = 0
     global obs
     for step in range(1, STEP+1):
@@ -63,11 +63,11 @@ def resource_distribution():
         if done:
             break
         obs = new_obs
-        flow_count = int(myenv.hyper / myenv.flows[step-1]["period"]) # 流在一个周期内出现几次
+        flow_count = int(myenv.hyper / myenv.flows[step-1]["period"]) # Count the appearance frequency of a flow
         for i in range(flow_count):
             recorder[int(action+i*(myenv.flows[step-1]["period"]/myenv.T))] += 1
             #print(recorder)
-    recorder = (recorder * FRAME_SIZE) / (myenv.capacity - myenv.preserv) # 计算每个时间槽的占比
+    recorder = (recorder * FRAME_SIZE) / (myenv.capacity - myenv.preserv) # Compute the usage of each time interval
     variance = 1 - np.std(recorder)
     print("Balance factor:", variance)
     with open("balance.txt", "wt") as fw:
@@ -81,13 +81,12 @@ def resource_distribution():
             L.append([i, j, z])
 
         name=['rewards', 'flows']
-        test=pd.DataFrame(columns=name,data=L) #数据有三列，列名分别为one,two,three
+        test=pd.DataFrame(columns=name,data=L)
         test.to_csv(filename, mode="a", header=False, index=False)
 
 if __name__ == "__main__":
     test_time()
     #resource_distribution()
-    # 0.3的概率选
     #csvfile = open('ddqndata.csv',encoding='utf-8')
     #df = pd.read_csv(csvfile,engine='python')
     #plt.plot(df["episode"], df["reward"])
