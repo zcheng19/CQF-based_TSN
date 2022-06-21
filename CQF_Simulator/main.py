@@ -12,7 +12,7 @@ import os
 
 BATCH_SIZE=32
 BUFFER_SIZE=int(1e5) # 1000000
-MIN_REPLAY_SIZE=20000 # 设置最小更新长度
+MIN_REPLAY_SIZE=20000 # set the minimum update buffer length
 EPSILON_START=0.4
 EPSILON_END=0.1
 EPSILON_DECAY=int(1e4)
@@ -39,7 +39,7 @@ def save_csv(epLst, rewardLst, epLen):
         L.append([i, j, z])
 
     name=['episodes','rewards', 'flows']
-    test=pd.DataFrame(columns=name,data=L) #数据有三列，列名分别为one,two,three
+    test=pd.DataFrame(columns=name,data=L) 
     test.to_csv('data.csv', mode="a", header=False, index=False)
 
 if __name__ == "__main__":
