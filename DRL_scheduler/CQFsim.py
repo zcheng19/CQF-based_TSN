@@ -3,12 +3,12 @@ from cus_flow import flow_template
 
 BANDWITH = 10 ** (-3) * 1000 # kbit/us
 
-PRESRV_BASE =  50 # 预留多少空间 kbit
-SWITCH_NUM = 2 # 中间共有多少台交换机
+PRESRV_BASE =  50 # reserved space (kbit)
+SWITCH_NUM = 2 # number of intermidiate switches
 MAX_T = True
 MULTICQF = True
-# 合法动作矩阵与业务流地址和拓扑有关
-QUEUE_NUM = 3
+
+QUEUE_NUM = 3 # cyclic queue number
 FRAME_SIZE = 3 # kbit
 ALPHA = 0.1 # 
 
@@ -99,7 +99,7 @@ class MulEnv:
                 y = temp 
 
     def count_max_pathlen(self):
-        # 找拓扑中最长路径的中间节点数-1
+        # find the maximum path length in the graph
         pathLst = self.find_all_paths("h1", "h2")
         maxlen = len(pathLst[0])
         for lst in pathLst:
@@ -109,19 +109,10 @@ class MulEnv:
         return maxlen-1
    
     def T_Q_mapping(self, t=10, c=QUEUE_NUM*SWITCH_NUM):
-        # 记录每个节点上有几个接口, t代表行数(状态空间需要记录多少时间槽), c代表列数(中间节点的接收接口有几个)
-        # self.int_num = {
-        #     "h1": len(self.graph["h1"]),
-        #     "s1": len(self.graph["s1"]),
-        #     "s2": len(self.graph["s2"]),
-        #     "h2": len(self.graph["h2"]),
-        # }
-
-        self.T_Q_array = np.zeros((t, c)) + self.preserv# 时间-队列状态矩阵
-
-    def action_space(self, max_T=True, T=None): # 默认时间槽取最大值
-        # 所有时间槽
-        self.get_hyper_period() # 计算调度周期
+        self.T_Q_array = np.zeros((t, c)) + self.preserv # time-queue array
+        
+    def action_space(self, max_T=True, T=None):
+        self.get_hyper_period() # Compute the hyper period
         if max_T:
             self.T = self.get_gcd_periods()
             action_num = self.hyper / self.T
@@ -131,67 +122,67 @@ class MulEnv:
             else:
                 self.T = T
                 action_num = self.hyper / self.T
-        self.capacity = BANDWITH * self.T # 一个时间槽最大容量
+        self.capacity = BANDWITH * self.T # maximum value of time interval capacity
         self.action_num = int(action_num)
         self.preserv = PRESRV_BASE * self.T / 800
 
-    def reset(self): # flow_1st表示第一个业务流
+    def reset(self): # flow_1st represents the first flow
         self.get_flows()
         self.action_space()
         maxNum = self.count_max_pathlen()-1 
         if MULTICQF:
             maxNum = (QUEUE_NUM-1) * maxNum - 1 + self.action_num
-        self.T_Q_mapping(t=maxNum, c=SWITCH_NUM*QUEUE_NUM) #  构造 时间槽-队列 矩阵, 作为第一个通道
+        self.T_Q_mapping(t=maxNum, c=SWITCH_NUM*QUEUE_NUM) # create the slot-queue array as the first channel of state 
         
-        # 构建 时间槽-接收队列 关系矩阵, 作为第二个通道
-     #       交换就1(Q1 Q2 Q3)  交换就2(Q1 Q2 Q3)
+        # create the slot-reception array as the second channel of state
+     #       switch1(Q1 Q2 Q3)  switch2(Q1 Q2 Q3)
      #  T0      0  0  1            0  0  1
      #  T1      1  0  0            1  0  0
      #  T2      0  1  0            0  1  0
      #  T3      0  0  1            0  0  1
      #  T4      1  0  0            1  0  0
         T_RXQ_array = np.zeros(self.T_Q_array.shape)
-        self.T_TXQ_dct = {} # 记录时间槽与发送队列的映射关系
-        self.T_RXQ_dct = {} # 记录时间槽与接收队列的映射关系
+        self.T_TXQ_dct = {} # The mapping relationship between slot and sending queue 
+        self.T_RXQ_dct = {} # The mapping relationship between slot and receiving queue
         for i in range(maxNum):
-            rx = (i%QUEUE_NUM+2)%QUEUE_NUM # 计算在时间槽Ti, 对应的接收队列的索引
+            rx = (i%QUEUE_NUM+2)%QUEUE_NUM # Calculate the index of receiving queue at slot T_i
             self.T_TXQ_dct[i] = i%QUEUE_NUM
             self.T_RXQ_dct[i] = rx
             for j in range(SWITCH_NUM):
                 T_RXQ_array[i][rx+j*QUEUE_NUM] = 1
 
-        # 以下是每个业务流的合法动作矩阵, 作为第三个通道
-     #     交换就1(Q1 Q2 Q3)  交换就2(Q1 Q2 Q3)
+        # The array of valid actions of each flow as the third channel of state
+     #     switch1(Q1 Q2 Q3)  switch2(Q1 Q2 Q3)
      # T0      1  1  1            1  1  1
      # T1      1  1  1            1  1  1
      # T2      0  0  0            0  0  0
      # T3      0  0  0            0  0  0
      # T4      0  0  0            1  0  0
         valid_action_array = np.zeros(self.T_Q_array.shape)
-        period_1st = self.flows[0]["period"] # 第一个flow的周期
-        valid_num = int(period_1st / self.T) # 计算对于即将到来的业务流合法的动作索引有哪些
+        period_1st = self.flows[0]["period"] # The first flow period
+        valid_num = int(period_1st / self.T) # Compute all the valid action indices for the coming flows
         for i in range(valid_num):
             valid_action_array[i] = 1
         
-        # 构建状态空间
+        # Create the state space
         self.state = np.array([self.T_Q_array, T_RXQ_array, valid_action_array])
         wrapper_state = np.array([self.state[0]/self.capacity, T_RXQ_array, valid_action_array]) # C,H,W
         return np.array([wrapper_state])
     
-    def step(self, slot, period, period_nth=None): # slot是时间槽索引, period是流周期, flow_nth是下一条流周期
+    def step(self, slot, period, period_nth=None): # slot the index of time interval, period is flow period, flow_nth is the next flow
         last_max_ratio = self.state[0].max()
-        freq = int(self.hyper / period) # 计算一个调度周期中, 帧出现的频率
+        freq = int(self.hyper / period) # Compute the apperance frequency of the flow in a hyper period
         for cnt in range(freq):
             slot = int(slot + cnt * (period / self.T))
             self.first_channel_transition(slot)
 
-        # 第三通道状态转移
+        # state transition of the third channel
         valid_num = int(period_nth / self.T)
         self.state[2] = 0
         for t in range(valid_num):
             self.state[2][t] = 1
 
-        # 奖励
+        # reward
         if self.check_done():
             reward = -10
             done = True
@@ -205,7 +196,7 @@ class MulEnv:
         return wrapper_state, reward, done
 
     def first_channel_transition(self, slot):
-        # 第一通道状态转移
+        # state transition of the first channel
         cur_rx = self.T_RXQ_dct[slot]
         self.state[0][slot][cur_rx] += FRAME_SIZE
         sending_count = 0
@@ -217,7 +208,7 @@ class MulEnv:
                 cur_rx = self.T_RXQ_dct[i]
                 self.state[0][i][self.T_RXQ_dct[i]+sending_count*QUEUE_NUM] += FRAME_SIZE
             else:
-                self.state[0][i][cur_rx+sending_count*QUEUE_NUM] += FRAME_SIZE # 存储一个时间槽队列的状态
+                self.state[0][i][cur_rx+sending_count*QUEUE_NUM] += FRAME_SIZE # store the slot-queue state
 
     def check_done(self):
         if (self.state > self.capacity).any():
@@ -226,7 +217,7 @@ class MulEnv:
             return False
 
     def check_valid_action(self, act, cur_period):
-        # 检查动作是否合法
+        # check whether the action is valid
         if act >= cur_period / self.T:
             return False
         else:
