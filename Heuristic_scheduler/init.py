@@ -16,7 +16,7 @@ BATCH_SIZE=32
 
 def init_weights(m):
     if isinstance(m, nn.Linear) or isinstance(m, nn.Conv2d):
-        torch.nn.init.kaiming_uniform_(m.weight, nonlinearity='relu') # m.weight?
+        torch.nn.init.kaiming_uniform_(m.weight, nonlinearity='relu')
 
 
 def nature_cnn(observation_space):
@@ -30,7 +30,7 @@ def nature_cnn(observation_space):
     with torch.no_grad():
         n_flatten = cnn(torch.as_tensor(np.zeros((observation_space.shape[0],
         observation_space.shape[1],observation_space.shape[2],
-        observation_space.shape[3]))).float()).shape[1] # 可以用形状相同的0矩阵试探
+        observation_space.shape[3]))).float()).shape[1] 
 
     #final_layer = 2**(int(math.log(n_flatten, 2))+1)
     out = nn.Sequential(cnn,)
@@ -65,7 +65,7 @@ class Network(nn.Module):
                 actions[0] = random.randint(0, self.num_actions - 1)
 
             valid = env.check_valid_action(actions[0], period)
-            if not valid: # 如果不合法，则重新选择动作
+            if not valid: # If the action is invalid, select another one
                 q_values[0][actions[0]] = -np.inf
             else:
                 break
