@@ -308,7 +308,7 @@ compute_loss: compute the loss for updating the neural network parameters.
 save: save the neural network model.
 
 load: load the neural network model.
-## User customized experiment part
+## Deep dive for user operations
 For users, the source code supports user customized environment and schedulers. Particularly, in CQFsim.py, the TSN graph is supported to be feasibly changed by defining the adjacent related nodes table. For example, if we have the following linear topology:
 
 ![](/CQF_Simulator/github.png)
@@ -317,4 +317,6 @@ The switch s1 is the neighbor of host h1, and it is also the neighbor of s2. h2 
 
 self.graph = {"h1": ["s1", ], "s1": ["h1", "s2"], "s2": ["s1", "h2"], "h2": ["s2", ]}
 
-After the network topology is defined, the properties of each flow should be introduced. Users can change the latency, jitter requirements, flow periods, frame sizes, source and destination nodes, etc., in the cus_flow.py and main.py. The time interval length defaultly is set to the greatest common divisor of all the flow period, users can feasibly define its length by adjusting the parameters of function action_space() in CQFsim.py, where the max_T should be set to 'False', and T is the specific value the user defined. More customizable parameters in CQFsim.py include the network bandwidth 'BANDWIDTH', perserved bandwidth for the bursting flows 'PRESRV', switch number 'SWITCH_NUM', the number of queues for cyclically forwarding 'QUEUE_NUM'. Any scheduling algorithms based on the CQF model can be feasibly designed by users according to our provided APIs in CQFsim.py, which are the functions of reset() and step(). If the users 
+After the network topology is defined, the properties of each flow should be introduced. Users can change the latency, jitter requirements, flow periods, frame sizes, source and destination nodes, etc., in the cus_flow.py and main.py. The time interval length defaultly is set to the greatest common divisor of all the flow period, users can feasibly define its length by adjusting the parameters of function action_space() in CQFsim.py, where the max_T should be set to 'False', and T is the specific value the user defined. More customizable parameters in CQFsim.py include the network bandwidth 'BANDWIDTH', perserved bandwidth for the bursting flows 'PRESRV', switch number 'SWITCH_NUM', the number of queues for cyclically forwarding 'QUEUE_NUM'. 
+
+Any scheduling algorithms based on the CQF model can be feasibly designed by users according to our provided APIs in CQFsim.py, which are the functions of reset() and step(). To be more convenient, several basic templates of scheduling algorithms, including the DRL-based (i.e., DQN and DDQN) algorithm, tabu search based heuristic algorithm, and Satisfiability modulo theories (SMT) 
