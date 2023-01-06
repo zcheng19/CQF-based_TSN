@@ -223,35 +223,65 @@ test_time: test the total time for running the program.
 
 resource_distribution: compute the load balance of each time interval.
 ### Variables in scheduler.py
-GAMMA: 
-BATCH_SIZE
-input_channels
-num_channels
-kernel_size
-padding
-stride
-num_residuals
-first_block
-self.num_actions
-self.device
-self.double
-obses
-actions
-rews
-dones
-new_obses
-obses_t
-actions_t
-rews_t
-dones_t
-new_obses_t
-targets_online_q_values
-targets_online_best_q_indices
-targets_target_q_values
-targets_selected_q_values
-targets
-q_values
-action_q_values
-loss
-params
+GAMMA: this parameter is related to the long term interest.
+
+BATCH_SIZE: the batch size of trajectories that are used for training.
+
+input_channels: the number of channels for input.
+
+num_channels: the extended number of channels processed by the convolutional neural network.
+
+kernel_size: the size of kernel of convolutional neural network.
+
+padding: zero padding of the observation.
+
+stride: the stride that the kernel slides.
+
+num_residuals: the number of residual blocks.
+
+first_block: check whether it is the first residual block.
+
+self.num_actions: the number of actions.
+
+self.device: the device used for training process.
+
+self.double: check whether it is using the Double DQN algorithm.
+
+obses: the batch of current observations sampled from replay buffer.
+
+actions: the batch of actions sampled from replay buffer.
+
+rews: the batch of rewards sampled from replay buffer.
+
+dones: the batch of training status sampled from replay buffer.
+
+new_obses: the transited observations sampled from replay buffer.
+
+obses_t: the tensor of the current observations converted from the numpy array.
+
+actions_t: the tensor of the actions converted from the numpy array.
+
+rews_t: the tensor of the reward converteds from the numpy array.
+
+dones_t: the tensor of the training status converted from the numpy array.
+
+new_obses_t: the tensor of the transited observations converted from the numpy array.
+
+targets_online_q_values: the Q-values computed by the evaluated neural network used for the variables of target function.
+
+targets_online_best_q_indices: the indices of maximum Q-value.
+
+targets_target_q_values: the target Q-values computed by target neural network equipped with the input new_obses_t.
+
+targets_selected_q_values: the target Q-values that are used for computing the loss.
+
+targets: the target batch of rewards for computing the loss.
+
+q_values: Q-values that are used to evaluate the value of each action.
+
+action_q_values: the evaluated Q-values for computing the loss.
+
+loss: loss is computed by using the smooth_l1_loss loss function.
+
+params: the parameters of each neural network.
 ## User customized experiment part
