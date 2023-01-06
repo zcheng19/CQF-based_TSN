@@ -153,4 +153,17 @@ reward_lst: a list to store the accumulated rewards for each episode.
 ep_lst: a list to store each episode label.
 
 ep_len: count how many episodes are continued until now.
+
+step_count: count how many steps are passed until now.
+
+epsilon: the epsilon parameter used for epsilon-greedy algorithm to choose the actions.
+
+new_obs: the transited observation of the old one.
+
+transition: the state transition after the actions are taken.
+
+loss: the loss between evaluated result and taget one.
+
+### Functions in cus_flow.py
+
 ## User customized experiment part
