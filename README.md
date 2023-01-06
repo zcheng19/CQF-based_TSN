@@ -111,7 +111,7 @@ check_done: check the training status.
 
 check_valid_action: check whether the action taken for each flow is valid.
 
-### Variables in cus_flow.py
+### Variables in main.py
 BATCH_SIZE: the batch size for sampling the trajectories during the training process.
 
 MIN_REPLAY_SIZE: the minimum threshold of trajectories amount for starting the training. 
@@ -164,6 +164,49 @@ transition: the state transition after the actions are taken.
 
 loss: the loss between evaluated result and taget one.
 
+### Functions in main.py
+myenv.reset: reset the environment at each episode.
+
+online_net.apply: apply the initialized parameters of neural network.
+
+target_net.load_state_dict: load the parameters for target network.
+
+torch.optim.Adam: use Adam optimizer to update the neural network parameters.
+
+online_net.act: choose an action by the DRL agent according to the Q-values computed by the neural network.
+
+myenv.step: take the actions, and the do the MDP.
+
+replay_buffer.append: add the trajectories into replay buffer.
+
+np.interp: use the linear interpolation method to update the epsilon.
+
+random.sample: randomly sample the trajectories.
+
+online_net.compute_loss: compute the loss between the evaluate and target values by using the loss function.
+
+optimizer.zero_grad: clear the historial gradient.
+
+loss.backward: back forward the gradient.
+
+optimizer.step: update the network parameters based on the defined learning rate.
+
+online_net.save: save the updated parameters of neural networks.
+
+### Variables in cus_flow.py
+flow_features: a list for all the flows, where the features are defined.
+
+period: the period of each flow.
+
+latency: the latency requirement customized by users.
+
+jitter: the latnecy variation of transmitting flows.
+
+src: the source nodes of each flow.
+
+dst: the destination nodes of each flow.
+
 ### Functions in cus_flow.py
+flow_template: build all the flows by using the flow template.
 
 ## User customized experiment part
