@@ -308,7 +308,7 @@ compute_loss: compute the loss for updating the neural network parameters.
 save: save the neural network model.
 
 load: load the neural network model.
-## Deep dive for user operations
+## Deepdive for user operations
 For users, the source code supports user customized environment and schedulers. Particularly, in CQFsim.py, the TSN graph is supported to be feasibly changed by defining the adjacent related nodes table. For example, if we have the following linear topology:
 
 ![](/CQF_Simulator/github.png)
