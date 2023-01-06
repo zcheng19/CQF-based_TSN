@@ -24,17 +24,17 @@ SWITCH_NUM: the number of switches in the network.
 
 MAX_T: the maximum time interval value of CQF.
 
-MULTICQF: Decide whether to choose the CQF model with mutiple queues.
+MULTICQF: decide whether to choose the CQF model with mutiple queues.
 
-QUEUE_NUM: The specific number of queues of the multi-CQF.
+QUEUE_NUM: the specific number of queues of the multi-CQF.
 
-FRAME_SIZE: The size of each frame.
+FRAME_SIZE: the size of each frame.
 
-ALPHA: A coefficient for adjusting the weight of the load balance in calculating the reward.
+ALPHA: a coefficient for adjusting the weight of the load balance in calculating the reward.
 
 self.graph: define a network graph.
 
-path: A list to store all of the available paths from the source node to destination one with no loop.
+path: a list to store all of the available paths from the source node to destination one with no loop.
 
 stack: save each available path temporarily. 
 
@@ -42,5 +42,13 @@ visited: store the visited nodes.
 
 seen_path: store the searched paths.
 
+self.flows: a list to store all of the defined flows. 
 
+self.period_lst: a list to store all of flow periods.
+
+gcd_period: get the greatest common divisor (GCD) of the flow periods.
+
+self.hyper: get the hyper period for all of the flows to schedule.
+
+self.T_Q_array: the two-dimensional time-resource matrix for observation.
 ## User customized experiment part
