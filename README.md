@@ -15,6 +15,18 @@ The CQF-based TSN simulator can support multiple cyclic queues from 2 to K, wher
 
 # Parameters description
 ## Variables
-### Variables in env.py
+### Variables in CQFsim.py
+BANDWIDTH: the link bandwidth of TSN.
 
-## User definable variables
+PRESRV: the preserved bandwidth for bursting flows.
+
+SWITCH_NUM: 
+
+MAX_T: 
+
+MULTICQF:
+
+QUEUE_NUM:
+FRAME_SIZE:
+ALPHA:
+## User customized experiment part
