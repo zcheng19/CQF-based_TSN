@@ -72,5 +72,11 @@ pad_valid_action_array: zero paddings for the valid action array.
 
 self.state: the original state for observation.
 
-wrapper_state: the processed state as the input information for DRL algorithm. The processing includes 
+wrapper_state: the processed state as the input information for DRL algorithm. The processing includes extending the dimension of state array, and zero paddings.
+
+freq: count the frequency a flow can appear in a hyper period.
+
+reward: the immediate reward the environment feeds back after the action is taken.
+
+done: the training status reflected by the environment. 
 ## User customized experiment part
