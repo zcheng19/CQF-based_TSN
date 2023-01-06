@@ -64,4 +64,13 @@ self.T_TXQ_dct: the mapping relationship between the time intervals and sending 
 
 self.T_RXQ_dct: the mapping relationship between the time intervals and receiving queues.
 
+valid_action_array: the encoded valid action array for each flow.
+
+valid_num: the valid number of actions for each flow.
+
+pad_valid_action_array: zero paddings for the valid action array.
+
+self.state: the original state for observation.
+
+wrapper_state: the processed state as the input information for DRL algorithm. The processing includes 
 ## User customized experiment part
