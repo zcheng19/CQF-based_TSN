@@ -14,7 +14,7 @@ Run "python3 play.py checkpoint" to test the performance of model.
 The CQF-based TSN simulator can support multiple cyclic queues from 2 to K, where K is an integer.
 
 # Parameters description
-## Variables
+## Variables and functions
 ### Variables in CQFsim.py
 BANDWIDTH: the link bandwidth of TSN.
 
@@ -79,4 +79,9 @@ freq: count the frequency a flow can appear in a hyper period.
 reward: the immediate reward the environment feeds back after the action is taken.
 
 done: the training status reflected by the environment. 
+
+### Functions in CQFsim.py
+create_graph:
+
+
 ## User customized experiment part
