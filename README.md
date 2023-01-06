@@ -311,3 +311,8 @@ load: load the neural network model.
 ## User customized experiment part
 For users, the source code supports user customized environment and schedulers. Particularly, in CQFsim.py, the TSN graph is supported to be feasibly changed by defining the adjacent related nodes table. For example, if we have the following linear topology:
 ![](/CQF_Simulator/github.png)
+
+The switch s1 is the neighbor of host h1, and it is also the neighbor of s2. h2 is the neighbor of s2. Then the table can be defined as:
+
+self.graph = {"h1": ["s1", ], "s1": ["h1", "s2"], "s2": ["s1", "h2"], "h2": ["s2", ]}
+
