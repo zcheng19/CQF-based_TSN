@@ -284,4 +284,28 @@ action_q_values: the evaluated Q-values for computing the loss.
 loss: loss is computed by using the smooth_l1_loss loss function.
 
 params: the parameters of each neural network.
+### Functions in scheduler.py
+init_weights: set the initial parameters of neural network.
+
+nn.Linear: the instance of linear function.
+
+Residual: define the residual neural network type.
+
+nn.Conv2d: the instance of convolutional neural network.
+
+forward: the forward propagation process.
+
+resnet_block: define several residual blocks for the residual neural network.
+
+res_net: the function for calculating a set of Q-values by ResNet.
+
+act: choose the valid actions for each flow.
+
+env.check_valid_action: check whether the actions taken for each flow is valid.
+
+compute_loss: compute the loss for updating the neural network parameters.
+
+save: save the neural network model.
+
+load: load the neural network model.
 ## User customized experiment part
