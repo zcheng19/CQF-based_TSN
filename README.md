@@ -310,4 +310,4 @@ save: save the neural network model.
 load: load the neural network model.
 ## User customized experiment part
 For users, the source code supports user customized environment and schedulers. Particularly, in CQFsim.py, the TSN graph is supported to be feasibly changed by defining the adjacent related nodes table. For example, if we have the following linear topology:
-![](/CQF-based_TSN/CQF_Simulator/github.png)
+![](/CQF_Simulator/github.png)
