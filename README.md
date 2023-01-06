@@ -111,5 +111,20 @@ check_done: check the training status.
 
 check_valid_action: check whether the action taken for each flow is valid.
 
-### Variables in 
+### Variables in cus_flow.py
+BATCH_SIZE: the batch size for sampling the trajectories during the training process.
+
+MIN_REPLAY_SIZE: the minimum threshold of trajectories amount for starting the training. 
+
+EPSILON_START: the start value of epsilon used to choose the action.
+
+EPSILON_END: the end value of epsilon used to choose the action.
+
+EPSILON_DECAY: the decay of the value of epsilon with the increasing of episodes.
+
+EPISODES: the total number of episodes for training.
+
+LR: the learning rate during training.
+
+TARGET_UPDATE_FREQ: the update frequency of training.
 ## User customized experiment part
