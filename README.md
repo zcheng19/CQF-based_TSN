@@ -310,9 +310,11 @@ save: save the neural network model.
 load: load the neural network model.
 ## User customized experiment part
 For users, the source code supports user customized environment and schedulers. Particularly, in CQFsim.py, the TSN graph is supported to be feasibly changed by defining the adjacent related nodes table. For example, if we have the following linear topology:
+
 ![](/CQF_Simulator/github.png)
 
 The switch s1 is the neighbor of host h1, and it is also the neighbor of s2. h2 is the neighbor of s2. Then the table can be defined as:
 
 self.graph = {"h1": ["s1", ], "s1": ["h1", "s2"], "s2": ["s1", "h2"], "h2": ["s2", ]}
 
+After the network topology is defined, the properties of each flow should be introduced. Users can change the latency, jitter requirements, flow periods, source and destination nodes, etc., in the cus_flow.py and main.py. The time interval length defaultly is set to the greatest common divisor of all the flow period, users can feasibly define its length by adjusting the parameters of function action_space() in CQFsim.py, where the max_T should be set to 'False', and T is the specific value the user defined. 
