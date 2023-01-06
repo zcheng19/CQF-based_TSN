@@ -20,13 +20,27 @@ BANDWIDTH: the link bandwidth of TSN.
 
 PRESRV: the preserved bandwidth for bursting flows.
 
-SWITCH_NUM: 
+SWITCH_NUM: the number of switches in the network.
 
-MAX_T: 
+MAX_T: the maximum time interval value of CQF.
 
-MULTICQF:
+MULTICQF: Decide whether to choose the CQF model with mutiple queues.
 
-QUEUE_NUM:
-FRAME_SIZE:
-ALPHA:
+QUEUE_NUM: The specific number of queues of the multi-CQF.
+
+FRAME_SIZE: The size of each frame.
+
+ALPHA: A coefficient for adjusting the weight of the load balance in calculating the reward.
+
+self.graph: define a network graph.
+
+path: A list to store all of the available paths from the source node to destination one with no loop.
+
+stack: save each available path temporarily. 
+
+visited: store the visited nodes.
+
+seen_path: store the searched paths.
+
+
 ## User customized experiment part
