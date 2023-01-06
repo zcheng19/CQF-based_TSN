@@ -51,4 +51,17 @@ gcd_period: get the greatest common divisor (GCD) of the flow periods.
 self.hyper: get the hyper period for all of the flows to schedule.
 
 self.T_Q_array: the two-dimensional time-resource matrix for observation.
+
+self.T: the time interval length.
+
+self.capacity: the capacity of each time interval.
+
+self.action_num: the number of actions that each flow can take.
+
+T_RXQ_array: the shape of the time-resource matrix.
+
+self.T_TXQ_dct: the mapping relationship between the time intervals and sending queues.
+
+self.T_RXQ_dct: the mapping relationship between the time intervals and receiving queues.
+
 ## User customized experiment part
