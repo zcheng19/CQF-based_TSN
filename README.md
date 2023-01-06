@@ -127,4 +127,30 @@ EPISODES: the total number of episodes for training.
 LR: the learning rate during training.
 
 TARGET_UPDATE_FREQ: the update frequency of training.
+
+myenv: the instance of CQF-based TSN system.
+
+device: the device (i.e., CPU, GPU) used for training the DRL algorithm.
+
+obs: the observations at each step.
+
+flow_len: the total number of flows.
+
+STEP: the total number of step within each episode.
+
+replay_buffer: the instance of replay buffer.
+
+episode_count: count how many flows are scheduled in each episode.
+
+online_net: the instance of the evaluate neural network.
+
+target_net: the instance of the target neural network.
+
+optimizer: the optimizer of DRL algorithm.
+
+reward_lst: a list to store the accumulated rewards for each episode.
+
+ep_lst: a list to store each episode label.
+
+ep_len: count how many episodes are continued until now.
 ## User customized experiment part
