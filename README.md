@@ -105,5 +105,11 @@ reset: the state resets at each episode.
 
 step: run the MDP of training process of DRL.
 
+first_channel_transition: the network resource state (i.e., the first channel of the observation) transition. 
 
+check_done: check the training status.
+
+check_valid_action: check whether the action taken for each flow is valid.
+
+### Variables in 
 ## User customized experiment part
