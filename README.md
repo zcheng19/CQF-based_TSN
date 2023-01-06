@@ -209,4 +209,49 @@ dst: the destination nodes of each flow.
 ### Functions in cus_flow.py
 flow_template: build all the flows by using the flow template.
 
+### Variables in play.py
+t1: the start time of the program.
+
+t2: the end time of the program.
+
+recorder: store the resource distribution of each time interval.
+
+variance: reflect the performance of load balance of each time interval.
+
+### Functions in play.py
+test_time: test the total time for running the program.
+
+resource_distribution: compute the load balance of each time interval.
+### Variables in scheduler.py
+GAMMA: 
+BATCH_SIZE
+input_channels
+num_channels
+kernel_size
+padding
+stride
+num_residuals
+first_block
+self.num_actions
+self.device
+self.double
+obses
+actions
+rews
+dones
+new_obses
+obses_t
+actions_t
+rews_t
+dones_t
+new_obses_t
+targets_online_q_values
+targets_online_best_q_indices
+targets_target_q_values
+targets_selected_q_values
+targets
+q_values
+action_q_values
+loss
+params
 ## User customized experiment part
