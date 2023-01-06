@@ -81,7 +81,21 @@ reward: the immediate reward the environment feeds back after the action is take
 done: the training status reflected by the environment. 
 
 ### Functions in CQFsim.py
-create_graph:
+create_graph: build a TSN graph by using adjacent table.
+
+find_all_paths: find all the paths from the source node to the destination with no loops.
+
+get_flows: get all the customized flows.
+
+get_gcd_periods: 
+GCD
+get_hyper_period
+division_method
+count_max_pathlen
+T_Q_mapping
+action_space
+reset
+step
 
 
 ## User customized experiment part
