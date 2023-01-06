@@ -87,15 +87,23 @@ find_all_paths: find all the paths from the source node to the destination with 
 
 get_flows: get all the customized flows.
 
-get_gcd_periods: 
-GCD
-get_hyper_period
-division_method
-count_max_pathlen
-T_Q_mapping
-action_space
-reset
-step
+get_gcd_periods: calculate the greatest common divisor of all the flow periods.
+
+GCD: the algorithm for computing the greatest common divisor.
+
+get_hyper_period: calculate the hyper period for flow scheduling.
+
+division_method: the division algorithm used for getting the hyper period.
+
+count_max_pathlen: compute the number of hops along the flow transmission path.
+
+T_Q_mapping: build the time-resource matrix as the observation.
+
+action_space: get the action space of DRL.
+
+reset: the state resets at each episode.
+
+step: run the MDP of training process of DRL.
 
 
 ## User customized experiment part
